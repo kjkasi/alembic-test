@@ -14,6 +14,7 @@ class User(Base):
     email = Column(String)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+    test_alembic = Column(Boolean, default=True)
 
     items = relationship("Item", back_populates="owner")
 
@@ -26,3 +27,8 @@ class Item(Base):
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="items")
+
+class Test(Base):
+    __tablename__ = "tests"
+
+    id = Column(Integer, primary_key=True)
