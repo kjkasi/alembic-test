@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  sqldata:
+    container_name: sqldata
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+      - SA_PASSWORD=Pass!word
+      - ACCEPT_EULA=Y
+      - MSSQL_COLLATION=Cyrillic_General_CI_AS
+    ports:
+      - "5433:1433"
+    volumes:
+      - document-sqldata:/var/opt/mssql
+
+  api:
+    container_name: api
+    image: alembic-test/api:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - ./:/code
+    depends_on:
+      - sqldata
+
+volumes:
+  document-sqldata:
+    external: false
